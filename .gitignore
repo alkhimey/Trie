@@ -1,0 +1,5 @@
+a.out
+*.o
+program.out
+core
+*~
