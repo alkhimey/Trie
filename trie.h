@@ -1,3 +1,6 @@
+#ifndef __TRIE_H__
+#define __TRIE_H__
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -12,10 +15,19 @@ typedef struct node_t {
 } TrieNode;
 
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
+
 void trie_insert(TrieNode **proot, char* str, void* data);
 
 void* trie_find(TrieNode* root, char* str);
 
 void trie_free(TrieNode* root);
 
+#ifdef __cplusplus
+}
+#endif
 
+#endif
