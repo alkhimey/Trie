@@ -68,6 +68,8 @@ TEST_CASE( "sanity" ) {
   CHECK( trie_find(root, (char*)"s") 		== NULL);
   CHECK( trie_find(root, (char*)"er") 		== NULL);
   CHECK( trie_find(root, (char*)"irrelevant") 	== NULL);
+
+  trie_free(root);
 }
 
 
@@ -85,6 +87,8 @@ TEST_CASE( "splitting node" ) {
   CHECK( trie_find(root, (char*)"abcdf") 	!= NULL);
   CHECK( trie_find(root, (char*)"ab")	 	!= NULL);
   CHECK( trie_find(root, (char*)"abcd") 	== NULL);
+
+  trie_free(root);
 }
 
 
@@ -100,6 +104,7 @@ TEST_CASE( "add before root" ) {
   CHECK( trie_find(root, (char*)"gr") 		!= NULL);
   CHECK( trie_find(root, (char*)"abc") 		!= NULL);
   
+  trie_free(root);
 }
 
 TEST_CASE( "before first alternative" ) {
@@ -113,6 +118,8 @@ TEST_CASE( "before first alternative" ) {
   CHECK( trie_find(root, (char*)"a") 	!= NULL);
   CHECK( trie_find(root, (char*)"ag") 	!= NULL);
   CHECK( trie_find(root, (char*)"aa") 	!= NULL);
+
+  trie_free(root);
 }
 
 TEST_CASE( "between alternatives" ) {
@@ -125,5 +132,32 @@ TEST_CASE( "between alternatives" ) {
   
   CHECK( trie_find(root, (char*)"a") 	== NULL);
   CHECK( trie_find(root, (char*)"ab") 	!= NULL);
+
+  trie_free(root);
 }
 
+TEST_CASE( "replace data" ) {
+  
+  TrieNode* root = NULL;
+  
+  trie_insert(&root, (char*)"abra", 	(void*)&t);
+  CHECK( trie_find(root, (char*)"abra") != NULL);
+
+  trie_insert(&root, (char*)"abra", 	(void*)0);
+  CHECK( trie_find(root, (char*)"abra") == NULL);
+
+  trie_insert(&root, (char*)"abra", 	(void*)&t);
+  CHECK( trie_find(root, (char*)"abra") != NULL);
+
+  trie_free(root);
+}
+
+
+TEST_CASE( "find in empty trie" ) {
+
+  TrieNode* root = NULL;
+  
+  CHECK( trie_find(root, (char*)"abra") == NULL);
+
+  trie_free(root);
+}
