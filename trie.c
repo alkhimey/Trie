@@ -16,7 +16,7 @@ TrieNode* trie_make_node(char* str, void* data) {
 
 void trie_insert(TrieNode **proot, char* str, void* data) {
   char* node_str;
-  TrieNode* temp;
+  TrieNode* temp, *temp2;
   TrieNode* node = *proot;
   TrieNode* prev = NULL;
   TrieNode* parent = NULL;
@@ -45,7 +45,7 @@ void trie_insert(TrieNode **proot, char* str, void* data) {
       node = node->next_alt;
 
     } else if(*str < *node_str) {
-      // Add before.
+      // Add before
       
       temp = trie_make_node(str, data);
      
@@ -62,18 +62,37 @@ void trie_insert(TrieNode **proot, char* str, void* data) {
 
     } else {
       
-      
       for(; *str && *node_str; str++, node_str++) {
 	if (*str != *node_str)
 	  break;
       }
       
-      if (!*str && *node_str) {
+      if(*str && *node_str) {
+	// Common prefix
+	// Split the node
+
+	temp = trie_make_node(node_str, node->data);
+	temp->child = node->child;
+	*node_str = '\0'; // TODO: Space could be saved by reallocating to smaller memory
+	node->data = NULL;
+	if(*str > *node_str) {
+	  node->child = temp;
+	  temp->next_alt = trie_make_node(str, data);
+	} else {
+	  temp2 = trie_make_node(str, data);
+	  node->child = temp2;
+	  temp2->next_alt = temp;
+	}
+
+	return;
+
+      } else if (!*str && *node_str) {
 	// Our string is a prefix of the node's string.
 	// Split the node.
 	
 	temp = trie_make_node(node_str, node->data);
-	*node_str = '\0'; // TODO: Do we need to reallocate?
+	*node_str = '\0'; // TODO: Space could be saved by reallocating to smaller memory
+	node->data = NULL;
 	temp->child = node->child;
 	node->child = temp;
 	return;
@@ -107,8 +126,6 @@ void trie_insert(TrieNode **proot, char* str, void* data) {
 
   // Add as last alternative
   prev->next_alt = trie_make_node(str, data);
-  
-  
 }
 
 void* trie_find(TrieNode* root, char* str) {
