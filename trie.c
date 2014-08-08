@@ -92,7 +92,7 @@ void trie_insert(TrieNode **proot, char* str, void* data) {
 	
 	temp = trie_make_node(node_str, node->data);
 	*node_str = '\0'; // TODO: Space could be saved by reallocating to smaller memory
-	node->data = NULL;
+	node->data = data;
 	temp->child = node->child;
 	node->child = temp;
 	return;

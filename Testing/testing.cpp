@@ -1,6 +1,6 @@
 /**
  * @author  Artium Nihamkin <artium@nihamkin.com>
- * @date May 2014 
+ * @date August 2014 
  *
  * @section LICENSE
  *
@@ -49,7 +49,7 @@
 
 const int t = 1;
 
-TEST_CASE( "sanity test" ) {
+TEST_CASE( "sanity" ) {
   
   TrieNode* root = NULL;
   
@@ -67,25 +67,63 @@ TEST_CASE( "sanity test" ) {
   CHECK( trie_find(root, (char*)"mar") 		== NULL);
   CHECK( trie_find(root, (char*)"s") 		== NULL);
   CHECK( trie_find(root, (char*)"er") 		== NULL);
-  
-  /*
-  SECTION( "post" ) {
-    CHECK_NOTHROW(x++);
-    CHECK_THROWS(x++);
-    CHECK( x == 100 );
-  
-    CHECK_NOTHROW(y--);
-    CHECK_THROWS(y--);
-    CHECK( y == 0 );
-  }
-
-  SECTION( "pre" ) {
-    CHECK_NOTHROW(++x);
-    CHECK_THROWS(++x);
-    CHECK( x == 100 );
-    
-    CHECK_NOTHROW(--y);
-    CHECK_THROWS(--y);
-    CHECK( y == 0 );
-    }*/
+  CHECK( trie_find(root, (char*)"irrelevant") 	== NULL);
 }
+
+
+TEST_CASE( "splitting node" ) {
+  
+  TrieNode* root = NULL;
+  
+  trie_insert(&root, (char*)"abcde", 	(void*)&t);
+  trie_insert(&root, (char*)"abcdex", 	(void*)&t);
+  trie_insert(&root, (char*)"abcdf", 	(void*)&t);
+  trie_insert(&root, (char*)"ab", 	(void*)&t);
+
+  CHECK( trie_find(root, (char*)"abcde") 	!= NULL);
+  CHECK( trie_find(root, (char*)"abcdex") 	!= NULL);
+  CHECK( trie_find(root, (char*)"abcdf") 	!= NULL);
+  CHECK( trie_find(root, (char*)"ab")	 	!= NULL);
+  CHECK( trie_find(root, (char*)"abcd") 	== NULL);
+}
+
+
+TEST_CASE( "add before root" ) {
+  
+  TrieNode* root = NULL;
+  
+  trie_insert(&root, (char*)"great", 	(void*)&t);
+  trie_insert(&root, (char*)"gr", 	(void*)&t);
+  trie_insert(&root, (char*)"abc", 	(void*)&t);
+  
+  CHECK( trie_find(root, (char*)"great") 	!= NULL);
+  CHECK( trie_find(root, (char*)"gr") 		!= NULL);
+  CHECK( trie_find(root, (char*)"abc") 		!= NULL);
+  
+}
+
+TEST_CASE( "before first alternative" ) {
+  
+  TrieNode* root = NULL;
+  
+  trie_insert(&root, (char*)"a", 	(void*)&t);
+  trie_insert(&root, (char*)"ag", 	(void*)&t);
+  trie_insert(&root, (char*)"aa", 	(void*)&t);
+  
+  CHECK( trie_find(root, (char*)"a") 	!= NULL);
+  CHECK( trie_find(root, (char*)"ag") 	!= NULL);
+  CHECK( trie_find(root, (char*)"aa") 	!= NULL);
+}
+
+TEST_CASE( "between alternatives" ) {
+  
+  TrieNode* root = NULL;
+  
+  trie_insert(&root, (char*)"ag", 	(void*)&t);
+  trie_insert(&root, (char*)"aa", 	(void*)&t);
+  trie_insert(&root, (char*)"ab", 	(void*)&t);
+  
+  CHECK( trie_find(root, (char*)"a") 	== NULL);
+  CHECK( trie_find(root, (char*)"ab") 	!= NULL);
+}
+
