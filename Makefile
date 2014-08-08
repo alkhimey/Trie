@@ -1,6 +1,6 @@
 CC=gcc
 CPP=g++
-CFLAGS=-Wall -g
+CFLAGS=-Wall
 TESTS_DIR=Testing
 
 all:	trie.o main.c tests
