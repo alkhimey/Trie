@@ -1,17 +1,18 @@
 CC=gcc
 CPP=g++
-CFLAGS=-Wall
+CFLAGS=-Wall -g
 TESTS_DIR=Testing
 
-all:	trie.o main.c tests
-	$(CC) trie.o main.c -o program.out
+all:	demo tests
+
+demo:	trie.o main.c
+	$(CC) trie.o main.c -o demo.out $(CFLAGS)	
 
 tests: $(TESTS_DIR)/testing.cpp trie.o 
-	$(CPP) trie.o $(TESTS_DIR)/testing.cpp -o run_test.out
+	$(CPP) trie.o $(TESTS_DIR)/testing.cpp -o run_test.out $(CFLAGS)
 
 trie.o:	trie.c trie.h
-	$(CC) -c trie.c -o trie.o -g
-
+	$(CC) -c trie.c -o trie.o $(CFLAGS)
 
 clean:
-	rm -f *.out *.o $(TESTS_DIR)/*.out $(TESTS_DIR)/*.o
+	rm -f trie.o run_test.out demo.out

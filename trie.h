@@ -59,9 +59,9 @@ extern "C"{
  * @brief Inserts data into the trie.
  *
  * @param proot Pointer to pointer of the root node. If proot points to NULL, 
- *              this function will allocate it. A common mistake is not to set
- *              set the pointer to the root to NULL before calling this function
- *              the first time.
+ *              this function will allocate it. 
+ *              A common mistake is not to set the pointer to the root to NULL 
+ *              before calling this function the first time.
  * @param str	The key to which the data should be inserted.
  * @param data  Pointer to the data. Only the pointer is stored, data is not copied.	
  */
@@ -70,9 +70,9 @@ void trie_insert(TrieNode **proot, char* str, void* data);
 /**
  * @brief Retrieves data associated with a key.
  *
- * @param root The root of the trie.
- * @param str  The key.
- * @return Pointer to the stored data. NULL if the key is not in the trie.
+ * @param root	The root of the trie.
+ * @param str	The key.
+ * @return 	Pointer to the stored data. NULL if the key is not in the trie.
  */
 void* trie_find(TrieNode* root, char* str);
 

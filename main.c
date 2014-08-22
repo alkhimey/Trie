@@ -59,10 +59,12 @@ void print(TrieNode* root, int lvl) {
 int main(void) {
   char str[MAX_LEN];
   
-  TrieNode* root = NULL;
+  TrieNode* root = NULL; // It is important the root is initialized to NULL.
 
   char *pos;
 
+
+  printf("This is a demo program for the trie implemenation.\nEnd of input is marked as empty string (simply press ENTER).\n");
 
   while(1) {
     printf("Enter string to store: ");
@@ -97,5 +99,6 @@ int main(void) {
     else
       printf("Not found\n");
   } 
-      
+  
+  return 0;    
 }
